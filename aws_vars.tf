@@ -6,7 +6,6 @@ variable "AWS_PROVIDER" {
     secret_key = "yourIAMUserSecretKey"
   }
 }
-
 variable "AWS_KEY_PAIR" {
   type = map(string)
   default = {
