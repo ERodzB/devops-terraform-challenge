@@ -23,13 +23,6 @@ resource "aws_security_group" "devops_ssh" {
     protocol = "tcp"
     security_groups = [aws_security_group.devops_alb_security_group.id]
   } 
-  ingress{
-    description = "testing script"
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["190.92.58.176/32"]
-  }
   egress {
     from_port   = 0
     to_port     = 0
