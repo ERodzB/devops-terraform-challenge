@@ -1,0 +1,7 @@
+---
+
+- hosts: node-servers
+  gather_facts: False
+  remote_user: ubuntu
+  tasks:
+    - action: ping

@@ -4,7 +4,6 @@ resource "aws_instance" "devops_ec2_instance" {
   key_name               = aws_key_pair.devops_key.key_name
   vpc_security_group_ids = [aws_security_group.devops_ssh.id]
   subnet_id              = aws_subnet.devops_subnet_1.id
-  user_data = file("scripts/nginx.sh")
 }
 
 resource "aws_instance" "devops_ec2_instance2" {
@@ -13,7 +12,6 @@ resource "aws_instance" "devops_ec2_instance2" {
   key_name               = aws_key_pair.devops_key.key_name
   vpc_security_group_ids = [aws_security_group.devops_ssh.id]
   subnet_id              = aws_subnet.devops_subnet_2.id
-  user_data = file("scripts/nginx.sh")
 }
 
 output "ec2_instance_dns_1" {
