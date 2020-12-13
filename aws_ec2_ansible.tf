@@ -12,21 +12,21 @@ resource "aws_instance" "ansible_ec2_instance" {
   key_name               = aws_key_pair.devops_key.key_name
   vpc_security_group_ids = [aws_security_group.shared_services_security_group.id]
   subnet_id              = aws_subnet.shared_services_subnet.id
-  user_data = data.template_file.ansible_script.rendered
-  
+  user_data              = data.template_file.ansible_script.rendered
+
   provisioner "file" {
-    source = "scripts/node.yaml"
+    source      = "scripts/node.yaml"
     destination = "/tmp/node.yaml"
   }
   provisioner "file" {
-    source = "scripts/ping.yaml"
+    source      = "scripts/ping.yaml"
     destination = "/tmp/ping.yaml"
   }
   provisioner "file" {
-    source = var.AWS_KEY_PAIR["private_key"]
+    source      = var.AWS_KEY_PAIR["private_key"]
     destination = "/tmp/devops"
   }
-  
+
   connection {
     host        = aws_instance.ansible_ec2_instance.public_ip
     type        = "ssh"
@@ -35,7 +35,7 @@ resource "aws_instance" "ansible_ec2_instance" {
   }
   tags = {
     product = "ansible"
-    test = "test"
+    test    = "test"
   }
 }
 
