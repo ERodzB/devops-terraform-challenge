@@ -23,7 +23,7 @@ resource "aws_security_group" "devops-ec2-security-group" {
     to_port         = 5000
     protocol        = "tcp"
     security_groups = [aws_security_group.devops-alb-security-group.id]
-  }/*
+  }
   ingress {
     description     = "Allow HTTP traffic from ALB"
     from_port       = 80
@@ -38,7 +38,6 @@ resource "aws_security_group" "devops-ec2-security-group" {
     protocol        = "tcp"
     security_groups = [aws_security_group.devops-alb-security-group.id]
   }
-  */
   egress {
     from_port   = 0
     to_port     = 0

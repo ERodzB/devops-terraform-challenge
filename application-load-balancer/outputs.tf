@@ -1,3 +1,3 @@
-output "alb_dns" {
-  value = aws_lb.devops_alb.dns_name
+output "devops-nodejs-instances-alb-dns" {
+  value = aws_lb.devops-nodejs-instances-alb.dns_name
 }

@@ -22,23 +22,7 @@ variable "nodejs-key-name"{
     type=string
     default="nodejs"
 }
-variable "nodejs-private-key-path"{
-    type=string
-    default="ssh-keys/${var.nodejs-key-name}"
-}
-variable "nodejs-public-key-path"{
-    type=string
-    default="ssh-keys/${var.nodejs-key-name}.pub"
-}
 variable "ansible-key-name"{
     type=string
     default="ansible"
-}
-variable "ansible-private-key-path"{
-    type=string
-    default="ssh-keys/${var.ansible-key-name}"
-}
-variable "ansible-public-key-path"{
-    type=string
-    default="ssh-keys/${var.ansible-key-name}.pub"
 }

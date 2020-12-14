@@ -23,7 +23,7 @@ resource "aws_instance" "devops-ansible-ec2-instance" {
     destination = "/tmp/ping.yaml"
   }
   provisioner "file" {
-    source      = "../ssh-keys/${var.nodejs-key-name}"
+    source      = "ssh-keys/${var.nodejs-key-name}"
     destination = "/tmp/${var.nodejs-key-name}"
   }
 
@@ -31,9 +31,9 @@ resource "aws_instance" "devops-ansible-ec2-instance" {
     host        = aws_instance.devops-ansible-ec2-instance.public_ip
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("../ssh-keys/${var.ansible-key-name}")
+    private_key = file("ssh-keys/${var.ansible-key-name}")
   }
-  tags {
+  tags = {
     product = "ansible"
     environment = var.environment
     application = var.application

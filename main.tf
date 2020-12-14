@@ -1,6 +1,8 @@
-module "aws-provider" {
-    source = "./aws-provider"
-    region = var.aws-region
+provider "aws" {
+  region = var.aws-region
+  //If not using a AWS Cloud9 environment
+  //access_key = var.access-key
+  //secret_key = var.secret-key
 }
 module "networking" {
     source = "./networking"
@@ -15,8 +17,8 @@ module "security-groups" {
 }
 module "key-pairs" {
     source = "./key-pairs"
-    key-name = var.nodejs-key-name
-    public-key-path = var.nodejs-public-key-path
+    nodejs-key-name = var.nodejs-key-name
+    ansible-key-name = var.ansible-key-name
 }
 module "nodejs-instances" {
     source = "./nodejs-instances"
@@ -32,6 +34,7 @@ module "ansible-instance" {
     application = var.application
     environment =  var.environment
     nodejs-key-name = var.nodejs-key-name
+    ansible-key-name = var.ansible-key-name
     devops-shared-services-subnet-id = module.networking.devops-shared-services-subnet-id
     devops-shared-services-security-group = module.security-groups.devops-shared-services-security-group
     devops-ec2-ansible-key-pair = module.key-pairs.devops-ec2-ansible-key-pair
@@ -41,6 +44,7 @@ module "ansible-instance" {
 module "application-load-balancer" {
     source = "./application-load-balancer"
     devops-vpc-id = module.networking.devops-vpc-id
+    devops-ec2-security-group-arn = module.security-groups.devops-ec2-security-group-arn
     devops-nodejs-ec2-instance-a-id = module.nodejs-instances.devops-nodejs-ec2-instance-a-id
     devops-nodejs-ec2-instance-b-id = module.nodejs-instances.devops-nodejs-ec2-instance-b-id
     devops-public-subnet-a-id = module.networking.devops-public-subnet-a-id

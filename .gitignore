@@ -1,4 +1,4 @@
-key_pairs/*
+ssh-keys/*
 # Local .terraform directories
 **/.terraform/*
 *.tfvars
