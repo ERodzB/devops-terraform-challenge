@@ -19,25 +19,37 @@ module "key-pairs" {
     source = "./key-pairs"
     nodejs-key-name = var.nodejs-key-name
     ansible-key-name = var.ansible-key-name
+    nodejs-public-key-name = var.nodejs-public-key-name
+    ansible-public-key-name = var.ansible-public-key-name
 }
 module "nodejs-instances" {
     source = "./nodejs-instances"
+    
     application = var.application
     environment =  var.environment
+    #AWS Key pair
     nodejs-key-pair = module.key-pairs.devops-ec2-nodejs-key-pair
+    #Security Group
     devops-ec2-security-group = module.security-groups.devops-ec2-security-group
+    #Subnets
     devops-public-subnet-a-id = module.networking.devops-public-subnet-a-id
     devops-public-subnet-b-id = module.networking.devops-public-subnet-b-id
 }
 module "ansible-instance" {
     source = "./ansible-instance"
+
     application = var.application
     environment =  var.environment
-    nodejs-key-name = var.nodejs-key-name
-    ansible-key-name = var.ansible-key-name
+    #SSH Key names
+    nodejs-private-key-name = var.nodejs-private-key-name
+    ansible-private-key-name = var.ansible-private-key-name
+    #Subnet
     devops-shared-services-subnet-id = module.networking.devops-shared-services-subnet-id
+    #Security Group
     devops-shared-services-security-group = module.security-groups.devops-shared-services-security-group
+    #AWS Key pair
     devops-ec2-ansible-key-pair = module.key-pairs.devops-ec2-ansible-key-pair
+    #NodeJs instances IP
     devops-nodejs-ec2-instance-a-private-ip = module.nodejs-instances.devops-nodejs-ec2-instance-a-private-ip
     devops-nodejs-ec2-instance-b-private-ip = module.nodejs-instances.devops-nodejs-ec2-instance-b-private-ip
 }

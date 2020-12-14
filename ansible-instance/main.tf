@@ -3,7 +3,7 @@ data "template_file" "ansible-script" {
   vars = {
     "ec2_ip1" = var.devops-nodejs-ec2-instance-a-private-ip
     "ec2_ip2" = var.devops-nodejs-ec2-instance-b-private-ip
-    "nodejs-key-name" = var.nodejs-key-name
+    "nodejs-key-name" = var.nodejs-private-key-name
   }
 }
 resource "aws_instance" "devops-ansible-ec2-instance" {
@@ -23,15 +23,14 @@ resource "aws_instance" "devops-ansible-ec2-instance" {
     destination = "/tmp/ping.yaml"
   }
   provisioner "file" {
-    source      = "ssh-keys/${var.nodejs-key-name}"
-    destination = "/tmp/${var.nodejs-key-name}"
+    source      = "ssh-keys/${var.nodejs-private-key-name}"
+    destination = "/tmp/${var.nodejs-private-key-name}"
   }
-
   connection {
     host        = aws_instance.devops-ansible-ec2-instance.public_ip
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("ssh-keys/${var.ansible-key-name}")
+    private_key = file("ssh-keys/${var.ansible-private-key-name}")
   }
   tags = {
     product = "ansible"

@@ -2,13 +2,9 @@ variable "aws-region" {
     type= string
     default= "us-east-1"
 }
-variable "start-preffix"{
-    type= string
-    default = "devops"
-}
 variable "application" {
     type= string
-    default= "acklen-challenge"
+    default= "chatbot"
 }
 variable "environment" {
     type= string
@@ -19,10 +15,26 @@ variable "working-machine-ip"{
     default="0.0.0.0/0"
 }
 variable "nodejs-key-name"{
-    type=string
-    default="nodejs"
+    type= string
+    default="nodejs-ec2"
 }
 variable "ansible-key-name"{
+    type= string
+    default="ansible-ec2"
+}
+variable "nodejs-private-key-name"{
     type=string
-    default="ansible"
+    default="nodejs-ec2"
+}
+variable "ansible-private-key-name"{
+    type=string
+    default="ansible-ec2"
+}
+variable "nodejs-public-key-name"{
+    type=string
+    default="nodejs-ec2.pub"
+}
+variable "ansible-public-key-name"{
+    type=string
+    default="ansible-ec2.pub"
 }

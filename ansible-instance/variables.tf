@@ -1,8 +1,8 @@
 variable "devops-ec2-ansible-key-pair" {}
 variable "devops-shared-services-security-group" {}
 variable "devops-shared-services-subnet-id" {}
-variable "nodejs-key-name" {}
-variable "ansible-key-name" {}
+variable "nodejs-private-key-name" {}
+variable "ansible-private-key-name" {}
 variable "devops-nodejs-ec2-instance-a-private-ip" {}
 variable "devops-nodejs-ec2-instance-b-private-ip" {}
 variable "application" {}
