@@ -1,3 +1,4 @@
+
 data "template_file" "ansible-script" {
   template = file("scripts/ansible.sh")
   vars = {
@@ -7,7 +8,7 @@ data "template_file" "ansible-script" {
   }
 }
 resource "aws_instance" "devops-ansible-ec2-instance" {
-  ami                    = "ami-04d29b6f966df1537"
+  ami                    = var.amazon-linux-2-server-ami-id
   instance_type          = "t2.micro"
   key_name               = var.devops-ec2-ansible-key-pair
   vpc_security_group_ids = [var.devops-shared-services-security-group]

@@ -1,5 +1,5 @@
 resource "aws_lb_target_group" "devops-nodejs-instances-target-group" {
-  name     = "devopsNodeJSTargetGroup"
+  name     = "devopsNodeJSTargetGroup${var.environment}"
   port     = 5000
   protocol = "HTTP"
   vpc_id   = var.devops-vpc-id
@@ -7,6 +7,11 @@ resource "aws_lb_target_group" "devops-nodejs-instances-target-group" {
     type           = "lb_cookie"
     cookie_duration = 3600
     enabled        = true
+  }
+  tags = {
+    product = "NodeJs"
+    application = var.application
+    environment = var.environment
   }
 }
 resource "aws_lb_listener" "devops-alb-listener" {

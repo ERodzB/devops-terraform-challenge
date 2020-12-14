@@ -1,5 +1,10 @@
 resource "aws_internet_gateway" "devops-ec2-internet-gateway" {
   vpc_id = var.devops-main-vpc-id
+  tags = {
+    product = "DevOps"
+    application = var.application
+    environment = var.environment
+  }
 }
 
 resource "aws_route_table" "devops-routing-table" {
