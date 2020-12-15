@@ -5,7 +5,7 @@ resource "aws_vpc" "devops-main-vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
-    product = "DevOps"
+    product     = "DevOps"
     application = var.application
     environment = var.environment
   }
@@ -17,7 +17,7 @@ resource "aws_subnet" "devops-shared-services-subnet" {
   availability_zone       = "${var.aws-region}a"
   map_public_ip_on_launch = true
   tags = {
-    product = "Shared Services"
+    product     = "Shared Services"
     application = var.application
     environment = var.environment
   }
@@ -29,7 +29,7 @@ resource "aws_subnet" "devops-public-subnet-a" {
   availability_zone       = "${var.aws-region}a"
   map_public_ip_on_launch = true
   tags = {
-    product = "NodeJs"
+    product     = "NodeJs"
     application = var.application
     environment = var.environment
   }
@@ -41,19 +41,19 @@ resource "aws_subnet" "devops-public-subnet-b" {
   availability_zone       = "${var.aws-region}b"
   map_public_ip_on_launch = true
   tags = {
-    product = "NodeJs"
+    product     = "NodeJs"
     application = var.application
     environment = var.environment
   }
 }
 #Internet Gateway
 module "internet-gateway" {
-    source = "./internet-gateway"
-    application = var.application
-    environment = var.environment
-    
-    devops-main-vpc-id = aws_vpc.devops-main-vpc.id
-    shared-services-subnet-id = aws_subnet.devops-shared-services-subnet.id
-    devops-public-subnet-a-id = aws_subnet.devops-public-subnet-a.id
-    devops-public-subnet-b-id = aws_subnet.devops-public-subnet-b.id
+  source      = "./internet-gateway"
+  application = var.application
+  environment = var.environment
+
+  devops-main-vpc-id        = aws_vpc.devops-main-vpc.id
+  shared-services-subnet-id = aws_subnet.devops-shared-services-subnet.id
+  devops-public-subnet-a-id = aws_subnet.devops-public-subnet-a.id
+  devops-public-subnet-b-id = aws_subnet.devops-public-subnet-b.id
 }

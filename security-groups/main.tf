@@ -38,7 +38,7 @@ resource "aws_security_group" "devops-ec2-security-group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    product = "nodejs"
+    product     = "nodejs"
     application = var.application
     environment = var.environment
   }
@@ -69,7 +69,7 @@ resource "aws_security_group" "devops-alb-security-group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    product = "NodeJs Application Load Balancer"
+    product     = "NodeJs Application Load Balancer"
     application = var.application
     environment = var.environment
   }
@@ -93,7 +93,7 @@ resource "aws_security_group" "shared-services-security-group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = {
-    product = "Shared Services"
+    product     = "Shared Services"
     application = var.application
     environment = var.environment
   }

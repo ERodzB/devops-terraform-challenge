@@ -8,7 +8,7 @@ resource "aws_instance" "ec2-instance" {
   tags = {
     environment = var.environment
     application = var.application
-    product = var.product
+    product     = var.product
   }
 }
 

@@ -1,17 +1,17 @@
-data "aws_ami" "ami-finder"{
+data "aws_ami" "ami-finder" {
   most_recent = true
-  owners = ["amazon"]
-  
+  owners      = ["amazon"]
+
   filter {
-    name = "name"
+    name   = "name"
     values = ["${var.ami-name}*"]
   }
   filter {
-    name = "virtualization-type"
+    name   = "virtualization-type"
     values = ["hvm"]
   }
   filter {
-    name = "state"
+    name   = "state"
     values = ["available"]
   }
 }

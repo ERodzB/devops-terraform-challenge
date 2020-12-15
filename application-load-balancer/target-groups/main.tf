@@ -4,12 +4,12 @@ resource "aws_lb_target_group" "devops-nodejs-instances-target-group" {
   protocol = "HTTP"
   vpc_id   = var.devops-vpc-id
   stickiness {
-    type           = "lb_cookie"
+    type            = "lb_cookie"
     cookie_duration = 3600
-    enabled        = true
+    enabled         = true
   }
   tags = {
-    product = "NodeJs"
+    product     = "NodeJs"
     application = var.application
     environment = var.environment
   }

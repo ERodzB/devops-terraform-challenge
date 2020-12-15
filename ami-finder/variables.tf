@@ -1,1 +1,1 @@
-variable "ami-name" { }
+variable "ami-name" {}

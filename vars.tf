@@ -39,6 +39,6 @@ variable "ansible-public-key-name" {
   default = "ansible-ec2.pub"
 }
 variable "nodejs-instance-type" {
-  type = string
+  type    = string
   default = "t2.micro"
 }
