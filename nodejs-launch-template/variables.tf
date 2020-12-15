@@ -1,0 +1,10 @@
+variable "application" {}
+variable "environment" {}
+variable "ubuntu-server-ami-id" {}
+variable "ubuntu-instance-type" {}
+variable "ansible-private-ip-address" {}
+variable "nodejs-key-pair" {}
+variable "devops-ec2-security-group" {}
+variable "devops-public-subnet-a-id" {}
+variable "devops-public-subnet-b-id" {}
+variable "devops-nodejs-instances-target-group-arn" {}

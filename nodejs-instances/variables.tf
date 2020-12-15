@@ -5,3 +5,4 @@ variable "devops-public-subnet-b-id"{}
 variable "application" {}
 variable "environment" {}
 variable "ubuntu-server-ami-id" {}
+variable "ansible-private-ip-address" {}

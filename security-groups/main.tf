@@ -18,14 +18,14 @@ resource "aws_security_group" "devops-ec2-security-group" {
     cidr_blocks = [var.working-machine-ip]
   }
   ingress {
-    description     = "Allow traffic HTTP Traffic  from ALB"
+    description     = "Allow traffic HTTP from ALB"
     from_port       = 80
     to_port         = 5000
     protocol        = "tcp"
     security_groups = [aws_security_group.devops-alb-security-group.id]
   }
   ingress {
-    description     = "Allow traffic HTTPS Traffic  from ALB"
+    description     = "Allow traffic HTTPS from ALB"
     from_port       = 443
     to_port         = 5000
     protocol        = "tcp"

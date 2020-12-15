@@ -38,3 +38,7 @@ variable "ansible-public-key-name" {
   type    = string
   default = "ansible-ec2.pub"
 }
+variable "ubuntu-instance-type" {
+  type    = string
+  default = "t2.micro"
+}

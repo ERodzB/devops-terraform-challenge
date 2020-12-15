@@ -26,7 +26,7 @@ module "key-pairs" {
   nodejs-public-key-name  = var.nodejs-public-key-name
   ansible-public-key-name = var.ansible-public-key-name
 }
-module "ami-finder"{
+module "ami-finder" {
   source = "./ami-finder"
 }
 module "nodejs-instances" {
@@ -34,12 +34,14 @@ module "nodejs-instances" {
 
   application = var.application
   environment = var.environment
-  #AMI
+  #Ubuntu AMI
   ubuntu-server-ami-id = module.ami-finder.ubuntu-server-ami-id
   #AWS Key pair
   nodejs-key-pair = module.key-pairs.devops-ec2-nodejs-key-pair
   #Security Group
   devops-ec2-security-group = module.security-groups.devops-ec2-security-group
+  #Ansible Ip
+  ansible-private-ip-address = module.ansible-instance.ansible-private-ip-address
   #Subnets
   devops-public-subnet-a-id = module.networking.devops-public-subnet-a-id
   devops-public-subnet-b-id = module.networking.devops-public-subnet-b-id
@@ -78,4 +80,25 @@ module "application-load-balancer" {
   devops-public-subnet-b-id       = module.networking.devops-public-subnet-b-id
   devops-alb-security-group       = module.security-groups.devops-alb-security-group
   devops-ec2-security-group       = module.security-groups.devops-ec2-security-group
+}
+module "nodejs-launch-template" {
+  source = "./nodejs-launch-template"
+
+  application = var.application
+  environment = var.environment
+  #Ubuntu AMI
+  ubuntu-server-ami-id = module.ami-finder.ubuntu-server-ami-id
+  #Instance Type
+  ubuntu-instance-type = var.ubuntu-instance-type
+  #AWS Key pair
+  nodejs-key-pair = module.key-pairs.devops-ec2-nodejs-key-pair
+  #Security Group
+  devops-ec2-security-group = module.security-groups.devops-ec2-security-group
+  #Subnets
+  devops-public-subnet-a-id = module.networking.devops-public-subnet-a-id
+  devops-public-subnet-b-id = module.networking.devops-public-subnet-b-id
+  #Target Group
+  devops-nodejs-instances-target-group-arn = module.application-load-balancer.devops-nodejs-instances-target-group-arn
+  #Ansible private ip
+  ansible-private-ip-address = module.ansible-instance.ansible-private-ip-address
 }
