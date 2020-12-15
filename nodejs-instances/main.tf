@@ -1,27 +1,23 @@
-
-resource "aws_instance" "devops-nodejs-ec2-instance-a" {
-  ami                    = var.ubuntu-server-ami-id
-  instance_type          = "t2.micro"
-  key_name               = var.nodejs-key-pair
-  vpc_security_group_ids = [var.devops-ec2-security-group]
-  subnet_id              = var.devops-public-subnet-a-id
-  tags = {
-    environment = var.environment
-    application = var.application
-    product = "nodejs"
-  }
+module "devops-nodejs-ec2-instance-a" {
+  source = "./ec2-instance"
+  server-ami-id                    = var.ubuntu-server-ami-id
+  instance-type          = var.instance-type
+  key-name               = var.nodejs-key-pair
+  ec2-security-group = var.devops-ec2-security-group
+  ec2-subnet-id = var.devops-public-subnet-a-id
+  product = "nodejs"
+  environment = var.application
+  application = var.environment
 }
-
-resource "aws_instance" "devops-nodejs-ec2-instance-b" {
-  ami                    = var.ubuntu-server-ami-id
-  instance_type          = "t2.micro"
-  key_name               = var.nodejs-key-pair
-  vpc_security_group_ids = [var.devops-ec2-security-group]
-  subnet_id              = var.devops-public-subnet-b-id
-  tags = {
-    environment = var.environment
-    application = var.application
-    product = "nodejs"
-  }
+module "devops-nodejs-ec2-instance-b" {
+  source = "./ec2-instance"
+  server-ami-id                    = var.ubuntu-server-ami-id
+  instance-type          = var.instance-type
+  key-name               = var.nodejs-key-pair
+  ec2-security-group = var.devops-ec2-security-group
+  ec2-subnet-id = var.devops-public-subnet-b-id
+  product = "nodejs"
+  environment = var.application
+  application = var.environment
 }
 

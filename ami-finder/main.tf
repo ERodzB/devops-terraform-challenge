@@ -1,27 +1,10 @@
-data "aws_ami" "amazon-linux-2-server-ami"{
+data "aws_ami" "ami-finder"{
   most_recent = true
   owners = ["amazon"]
   
   filter {
     name = "name"
-    values = ["amzn2*"]
-  }
-  filter {
-    name = "virtualization-type"
-    values = ["hvm"]
-  }
-  filter {
-    name = "state"
-    values = ["available"]
-  }
-}
-data "aws_ami" "ubuntu-server-ami"{
-  most_recent = true
-  owners = ["amazon"]
-  
-  filter {
-    name = "name"
-    values = ["Ubuntu*"]
+    values = ["${var.ami-name}*"]
   }
   filter {
     name = "virtualization-type"

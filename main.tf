@@ -6,7 +6,6 @@ provider "aws" {
 }
 module "networking" {
   source = "./networking"
-
   application = var.application
   environment = var.environment
   aws-region  = var.aws-region
@@ -19,25 +18,26 @@ module "security-groups" {
   devops-vpc-id      = module.networking.devops-vpc-id
   working-machine-ip = var.working-machine-ip
 }
-module "key-pairs" {
-  source                  = "./key-pairs"
-  nodejs-key-name         = var.nodejs-key-name
-  ansible-key-name        = var.ansible-key-name
-  nodejs-public-key-name  = var.nodejs-public-key-name
-  ansible-public-key-name = var.ansible-public-key-name
-}
-module "ami-finder" {
+module "nodejs-ami-finder"{
   source = "./ami-finder"
+  ami-name = "Ubuntu"
+}
+module "nodejs-key-pair" {
+  source                  = "./key-pairs"
+  key-name         = var.nodejs-key-name
+  public-key-name  = var.nodejs-public-key-name
 }
 module "nodejs-instances" {
   source = "./nodejs-instances"
 
   application = var.application
   environment = var.environment
-  #Ubuntu AMI
-  ubuntu-server-ami-id = module.ami-finder.ubuntu-server-ami-id
+  #AMI
+  ubuntu-server-ami-id = module.nodejs-ami-finder.ami-found-id
+  #Instance Type
+  instance-type = var.nodejs-instance-type
   #AWS Key pair
-  nodejs-key-pair = module.key-pairs.devops-ec2-nodejs-key-pair
+  nodejs-key-pair = module.nodejs-key-pair.server-key-pair-name
   #Security Group
   devops-ec2-security-group = module.security-groups.devops-ec2-security-group
   #Ansible Ip
@@ -46,16 +46,26 @@ module "nodejs-instances" {
   devops-public-subnet-a-id = module.networking.devops-public-subnet-a-id
   devops-public-subnet-b-id = module.networking.devops-public-subnet-b-id
 }
+module "ansible-ami-finder"{
+  source = "./ami-finder"
+  ami-name = "amzn2"
+}
+module "ansible-key-pair" {
+  source                  = "./key-pairs"
+
+  ansible-key-name        = var.ansible-key-name
+  ansible-public-key-name = var.ansible-public-key-name
+}
 module "ansible-instance" {
   source = "./ansible-instance"
 
   application = var.application
   environment = var.environment
   #AMI
-  amazon-linux-2-server-ami-id = module.ami-finder.amazon-linux-2-server-ami-id
+  amazon-linux-2-server-ami-id = module.ansible-ami-finder.ami-found-id
   #SSH Key names
-  nodejs-private-key-name  = var.nodejs-private-key-name
-  ansible-private-key-name = var.ansible-private-key-name
+  nodejs-private-key-name  = var.nodejs-key-pair.server-key-pair-name
+  ansible-private-key-name = var.ansible-key-pair.server-key-pair-name
   #Subnet
   devops-shared-services-subnet-id = module.networking.devops-shared-services-subnet-id
   #Security Group
