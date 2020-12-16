@@ -4,15 +4,33 @@
   gather_facts: true
   remote_user: ubuntu
   become: yes
+  ignore_unreachable: yes
   tasks:
   - name: "update instance"
     apt:
       update_cache: yes
       cache_valid_time: 3600
-  - name: "Installing Node"
+  - name: "Creating Nodejs 12 Package Directory"
+    file:
+      path: /etc/nodejs12-package
+      state: directory
+      owner: ubuntu
+  - name: "Downloading Node JS"
+    get_url:
+      url: "https://deb.nodesource.com/setup_12.x"
+      owner: ubuntu
+      dest: /etc/nodejs12-package/setup_12.x
+  - name: "Giving permisions to package"
+    file:
+      dest: /etc/nodejs12-package/setup_12.x
+      mode: +x
+  - name: "Executing nodejs package"
     shell:
-      "curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - && sudo apt-get install -y nodejs"
-  - name: "Creating Directory"
+      "/etc/nodejs12-package/setup_12.x"
+  - name: "Installing Node JS"
+    shell:
+      "sudo apt-get install -y nodejs"
+  - name: "Creating App Directory"
     file:
       path: /etc/chatbot
       state: directory
@@ -21,16 +39,24 @@
     git:
       repo: https://github.com/abkunal/Chat-App-using-Socket.io
       dest: /etc/chatbot
-  - name: "Moving to repository and installing dependecies"
-    shell:
-      "cd /etc/chatbot && npm install"
+  - name: "Installing dependecies"
+    npm:
+      path: /etc/chatbot
   - name: "Installing PM2 for managing node-servers"
     npm:
       name: pm2
       global: yes
+  - name: "System reboot"
+    reboot:
+      pre_reboot_delay: 3
+      msg: "The system will reboot in 3 seconds"
   - name: "Starting ChatBot Server"
     shell:
       "pm2 start /etc/chatbot/app.js"
   - name: "Run ChatBot server on reboot"
     shell:
-      "pm2 startup && sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu && pm2 save"
+      "pm2 startup && sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu"
+  - name: "Save current pm2 services"
+    shell:
+      "pm2 save"
+      

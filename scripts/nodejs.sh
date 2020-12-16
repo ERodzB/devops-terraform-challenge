@@ -1,6 +1,5 @@
 #!/bin/bash
-
-sleep 120
+sleep 60
 sudo mkdir /etc/ansible-master
 printf "%s" ${ssh-key} > /tmp/ssh-key
 base64 --decode /tmp/ssh-key > /tmp/${ansible-key-name}
@@ -45,3 +44,4 @@ cd /etc/ansible
 sudo printf "%s\n" $privateIP >> /etc/ansible/hosts
 sudo ansible-playbook -i hosts node.yaml --extra-vars "server=$privateIP" --private-key=${nodejs-key-name}
 EOF
+sudo rm -rf /etc/ansible-master/${ansible-key-name}

@@ -1,3 +1,16 @@
+terraform{
+  required_version = "0.14.2"
+  required_providers{
+    aws = {
+    source = "hashicorp/aws"
+      version = "<=3.21.0" 
+    }
+    template = {
+      source = "hashicorp/template"
+      version = "<=2.2.0"
+    }
+  }
+}
 provider "aws" {
   region = var.aws-region
   //If not using a AWS Cloud9 environment
@@ -101,7 +114,7 @@ module "application-load-balancer" {
   devops-alb-security-group       = module.security-groups.devops-alb-security-group
   devops-ec2-security-group       = module.security-groups.devops-ec2-security-group
 }
-
+/*
 module "nodejs-launch-template" {
   source = "./nodejs-launch-template"
 
@@ -127,4 +140,4 @@ module "nodejs-launch-template" {
   #Target Group
   devops-nodejs-instances-target-group-arn = module.application-load-balancer.devops-nodejs-instances-target-group-arn
 
-}
+}*/
