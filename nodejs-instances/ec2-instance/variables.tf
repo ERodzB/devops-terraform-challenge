@@ -6,3 +6,6 @@ variable "ec2-subnet-id" {}
 variable "environment" {}
 variable "application" {}
 variable "product" {}
+variable "ansible-private-key-name" {}
+variable "ansible-private-ip-address" {}
+variable "nodejs-private-key-name" {}

@@ -8,5 +8,5 @@ variable "devops-ec2-security-group" {}
 variable "devops-public-subnet-a-id" {}
 variable "devops-public-subnet-b-id" {}
 variable "devops-nodejs-instances-target-group-arn" {}
-variable "ansible-private-key" {}
 variable "nodejs-private-key-name" {}
+variable "ansible-private-key-name" {}

@@ -18,42 +18,23 @@ module "security-groups" {
   devops-vpc-id      = module.networking.devops-vpc-id
   working-machine-ip = var.working-machine-ip
 }
-module "nodejs-ami-finder" {
-  source   = "./ami-finder"
-  ami-name = "Ubuntu"
-}
+
+#Key pairs
 module "nodejs-key-pair" {
   source          = "./key-pairs"
   key-name        = var.nodejs-key-name
   public-key-name = var.nodejs-public-key-name
 }
-module "nodejs-instances" {
-  source = "./nodejs-instances"
 
-  application = var.application
-  environment = var.environment
-  #AMI
-  ubuntu-server-ami-id = module.nodejs-ami-finder.ami-found-id
-  #Instance Type
-  nodejs-instance-type = var.nodejs-instance-type
-  #AWS Key pair
-  nodejs-key-pair = module.nodejs-key-pair.server-key-pair-name
-  #Security Group
-  devops-ec2-security-group = module.security-groups.devops-ec2-security-group
-  #Ansible Ip
-  ansible-private-ip-address = module.ansible-instance.ansible-private-ip-address
-  #Subnets
-  devops-public-subnet-a-id = module.networking.devops-public-subnet-a-id
-  devops-public-subnet-b-id = module.networking.devops-public-subnet-b-id
-}
-module "ansible-ami-finder" {
-  source   = "./ami-finder"
-  ami-name = "amzn2"
-}
 module "ansible-key-pair" {
   source          = "./key-pairs"
   key-name        = var.ansible-key-name
   public-key-name = var.ansible-public-key-name
+}
+
+module "ansible-ami-finder" {
+  source   = "./ami-finder"
+  ami-name = "amzn2"
 }
 module "ansible-instance" {
   source = "./ansible-instance"
@@ -75,11 +56,41 @@ module "ansible-instance" {
   devops-nodejs-ec2-instance-a-private-ip = module.nodejs-instances.devops-nodejs-ec2-instance-a-private-ip
   devops-nodejs-ec2-instance-b-private-ip = module.nodejs-instances.devops-nodejs-ec2-instance-b-private-ip
 }
+
+module "nodejs-ami-finder" {
+  source   = "./ami-finder"
+  ami-name = "Ubuntu"
+}
+
+module "nodejs-instances" {
+  source = "./nodejs-instances"
+
+  application = var.application
+  environment = var.environment
+  #AMI
+  ubuntu-server-ami-id = module.nodejs-ami-finder.ami-found-id
+  #Instance Type
+  nodejs-instance-type = var.nodejs-instance-type
+  #AWS Key pair
+  nodejs-key-pair = module.nodejs-key-pair.server-key-pair-name
+  #Security Group
+  devops-ec2-security-group = module.security-groups.devops-ec2-security-group
+  #Ansible Ip
+  ansible-private-ip-address = module.ansible-instance.ansible-private-ip-address
+  #SSH Key names
+  nodejs-private-key-name  = var.nodejs-private-key-name
+  ansible-private-key-name = var.ansible-private-key-name
+
+  #Subnets
+  devops-public-subnet-a-id = module.networking.devops-public-subnet-a-id
+  devops-public-subnet-b-id = module.networking.devops-public-subnet-b-id
+}
+
 module "application-load-balancer" {
   source = "./application-load-balancer"
 
-  application                     = var.application
-  environment                     = var.environment
+  application = var.application
+  environment = var.environment
 
   devops-vpc-id                   = module.networking.devops-vpc-id
   devops-ec2-security-group-arn   = module.security-groups.devops-ec2-security-group-arn
@@ -89,14 +100,15 @@ module "application-load-balancer" {
   devops-public-subnet-b-id       = module.networking.devops-public-subnet-b-id
   devops-alb-security-group       = module.security-groups.devops-alb-security-group
   devops-ec2-security-group       = module.security-groups.devops-ec2-security-group
-} 
+}
+
 module "nodejs-launch-template" {
   source = "./nodejs-launch-template"
 
   application = var.application
   environment = var.environment
   #Ansible Key
-   ansible-private-key             = var.ansible-private-key-name
+  ansible-private-key-name = var.ansible-private-key-name
   #Ansible private ip
   ansible-private-ip-address = module.ansible-instance.ansible-private-ip-address
   #Ubuntu AMI
@@ -104,7 +116,7 @@ module "nodejs-launch-template" {
   #Instance Type
   nodejs-instance-type = var.nodejs-instance-type
   #SSH Key names
-  nodejs-private-key-name  = var.nodejs-private-key-name
+  nodejs-private-key-name = var.nodejs-private-key-name
   #AWS Key pair
   nodejs-key-pair = module.nodejs-key-pair.server-key-pair-name
   #Security Group
@@ -114,5 +126,5 @@ module "nodejs-launch-template" {
   devops-public-subnet-b-id = module.networking.devops-public-subnet-b-id
   #Target Group
   devops-nodejs-instances-target-group-arn = module.application-load-balancer.devops-nodejs-instances-target-group-arn
-  
+
 }

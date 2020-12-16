@@ -7,3 +7,5 @@ variable "environment" {}
 variable "ubuntu-server-ami-id" {}
 variable "ansible-private-ip-address" {}
 variable "nodejs-instance-type" {}
+variable "ansible-private-key-name" {}
+variable "nodejs-private-key-name" {}

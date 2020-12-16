@@ -12,3 +12,10 @@ output "devops-nodejs-ec2-instance-a-private-ip" {
 output "devops-nodejs-ec2-instance-b-private-ip" {
   value = module.nodejs-instances.devops-nodejs-ec2-instance-b-private-ip
 }
+output "devops-nodejs-ec2-instance-a-public-ip" {
+  value = module.nodejs-instances.devops-nodejs-ec2-instance-a-public-ip
+}
+
+output "devops-nodejs-ec2-instance-b-public-ip" {
+  value = module.nodejs-instances.devops-nodejs-ec2-instance-b-public-ip
+}

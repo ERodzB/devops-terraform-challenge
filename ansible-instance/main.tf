@@ -2,8 +2,6 @@
 data "template_file" "ansible-script" {
   template = file("scripts/ansible.sh")
   vars = {
-    "ec2_ip1"         = var.devops-nodejs-ec2-instance-a-private-ip
-    "ec2_ip2"         = var.devops-nodejs-ec2-instance-b-private-ip
     "nodejs-key-name" = var.nodejs-private-key-name
   }
 }
