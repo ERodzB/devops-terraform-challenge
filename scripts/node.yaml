@@ -46,10 +46,6 @@
     npm:
       name: pm2
       global: yes
-  - name: "System reboot"
-    reboot:
-      pre_reboot_delay: 3
-      msg: "The system will reboot in 3 seconds"
   - name: "Starting ChatBot Server"
     shell:
       "pm2 start /etc/chatbot/app.js"
@@ -59,4 +55,8 @@
   - name: "Save current pm2 services"
     shell:
       "pm2 save"
-      
+  - name: "System reboot"
+    reboot:
+      pre_reboot_delay: 3
+      msg: "The system will reboot in 3 seconds"
+    when: "{{ no-reboot }} is not defined"    
