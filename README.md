@@ -31,7 +31,7 @@ $ terraform -version
 and it will show you that you have installed terraform 0.14.2.
 
 # Project Modules Overview
-## Main Module
+# Main Module
 The main.tf contains the reference to the other modules, I decided to took this approach for splitting code and avoid having a big chunk of code.
 ### Module Variables
 | Variable | Description | Default Value |
@@ -47,6 +47,7 @@ The main.tf contains the reference to the other modules, I decided to took this 
 | nodejs-public-key-name | The name of your SSH public key that it will be uploaded to the EC2 Chat-Apps instances. | nodejs-ec2.pub |
 | ansible-public-key-name | The name of your SSH public key that it will be uploaded to the EC2 Ansible instance. | ansible-ec2.pub |
 | nodejs-instance-type | The EC2 Chat-app instance type to use.  | t2.micro |
+
 ### Module Outputs
 | Output | Description |
 | ------ | ------ |
@@ -57,7 +58,7 @@ The main.tf contains the reference to the other modules, I decided to took this 
 | devops-nodejs-ec2-instance-a-public-ip | Chat-App server A public ip adress. |
 | devops-nodejs-ec2-instance-b-public-ip | Chat-App server B public ip adress. |
 
-## ami-finder Module
+# Module ami-finder 
 Module that searches for the latest AMI.
 
 ### Module Variables
@@ -70,7 +71,7 @@ Module that searches for the latest AMI.
 | ------ | ------ |
 | ami-found-id | Returns the AMI ID. |
 
-## ansible-instance Module
+# Module ansible-instance 
 Module that creates a EC2 instance that then runs the ansible.sh bash script to install Ansible.
 
 ### Module Variables
@@ -91,7 +92,7 @@ Module that creates a EC2 instance that then runs the ansible.sh bash script to 
 | ansible-ip-address | Returns the Ansible server public ip address. |
 | ansible-private-ip-address | Returns the Ansible server private ip address. |
 
-## application-load-balancer Module
+# Module application-load-balancer 
 Module that creates the application load balancer used by the Chat-App servers.
 
 ### Module Variables
@@ -112,7 +113,7 @@ Module that creates the application load balancer used by the Chat-App servers.
 | devops-nodejs-instances-alb-dns | Application Load balancer DNS. |
 | devops-nodejs-instances-target-group-arn | The arn of Application Load Balancer target group to be later use for the autoscaling group. |
 
-## target-groups/application-load-balancer Sub Module
+## Sub Module target-groups/application-load-balancer 
 Module that creates the target groups used by the application load balancer.
 
 ### Sub Module Variables
@@ -130,8 +131,10 @@ Module that creates the target groups used by the application load balancer.
 | ------ | ------ |
 | devops-nodejs-instances-target-group-arn | The arn of Application Load Balancer target group to be later use for the autoscaling group. |
 
-## key-pairs module
+# Module key-pairs 
 Module that creates the AWS Key pairs used by the servers.
+
+### Module Variables
 | Variable | Description |
 | ------ | ------ |
 | key-name | Name that will be used to create the AWS Key pair. |
@@ -142,7 +145,7 @@ Module that creates the AWS Key pairs used by the servers.
 | ------ | ------ |
 | server-key-pair-name | Name of the created AWS Key pair. |
 
-## networking Module
+# Module networking 
 Module that creates 1 vpc with cidr 10.0.0.0/16 which has 3 subnets that uses internet gateways for accesing the internet.
 
 The following subnets are created:
@@ -163,7 +166,7 @@ The following subnets are created:
 | devops-shared-services-subnet-id | The Subnet ID of shared services. |
 | devops-public-subnet-a-id | The public subnet A ID of shared services.  |
 | devops-public-subnet-b-id | The public subnet B ID of shared services.  |
-## internet-gateway/networking sub module
+## Sub Module internet-gateway/networking 
 Sub module which give access to the created subnets.
 
 ### Module Variables
@@ -176,7 +179,7 @@ Sub module which give access to the created subnets.
 | application | Name of the application that will be used for tagging. |
 | environment | Name of Environment that will be used for tagging. |
 
-## nodejs-instances module
+# Module nodejs-instances module
 Module that creates 2 EC2 instances.
 
 ### Module Variables
@@ -204,7 +207,7 @@ Module that creates 2 EC2 instances.
 | devops-nodejs-ec2-instance-a-public-ip | Chat-App server A public ip adress. |
 | devops-nodejs-ec2-instance-b-public-ip | Chat-App server B public ip adress. |
 
-## ec2-instance/nodejs-instances Sub Module
+## Sub Module ec2-instance/nodejs-instances
 Module that create a EC2 instance that uses the nodejs.sh bash script for asking the Ansible server for configuration.
 
 ### Sub Module Variables
@@ -229,7 +232,7 @@ Module that create a EC2 instance that uses the nodejs.sh bash script for asking
 | ec2-instance-public-ip | The created EC2 instance public IP. |
 | ec2-instance-private-ip | The created EC2 instance private IP. |
 
-## nodejs-launch-template Module
+# Module nodejs-launch-template 
 Module that creates a launch configuration to be later be used in a autoscaling group with autoscaling policies and cloudwatch alarms.
 
 ### Module Variables
@@ -252,7 +255,7 @@ Module that creates a launch configuration to be later be used in a autoscaling 
 | ------ | ------ |
 | devops-nodejs-auto-scaling-group-name | The name of the created autoscaling group. |
 
-## nodejs-auto-scaling-group/nodejs-launch-template Sub Module
+## Sub Module nodejs-auto-scaling-group/nodejs-launch-template 
 Module which creates a autoscaling group with the created launch configuration.
 
 ### Sub Module Variables
@@ -269,7 +272,7 @@ Module which creates a autoscaling group with the created launch configuration.
 | ------ | ------ |
 | devops-nodejs-auto-scaling-group-name | The name of the created autoscaling group. |
 
-## nodejs-auto-scaling-policy/nodejs-launch-template Sub Module
+## Sub Module nodejs-auto-scaling-policy/nodejs-launch-template 
 Module which creates a autoscaling policy wich the created autoscaling group will be using.
 
 ### Sub Module Variables
@@ -285,7 +288,7 @@ Module which creates a autoscaling policy wich the created autoscaling group wil
 | devops-nodejs-add-servers-autoscaling-policy-arn | The arn of the created autoscaling policy add servers. |
 | devops-nodejs-remove-servers-autoscaling-policy-arn | The arn of the created autoscaling policy remove servers. |
 
-## nodejs-cloudwatch-alarms/nodejs-launch-template Sub Module
+## Sub Module nodejs-cloudwatch-alarms/nodejs-launch-template 
 Module which creates a autoscaling policy wich the created autoscaling group will be using.
 
 ### Sub Module Variables
@@ -297,7 +300,7 @@ Module which creates a autoscaling policy wich the created autoscaling group wil
 | application | Name of the application that will be used for tagging. |
 | environment | Name of Environment that will be used for tagging. |
 
-## security-groups Module
+# Module security-groups 
 Module that creates a the security groups for allowing the servers interactions, working machine SSH and application load balancers allowed traffic.
 
 ### Module Variables
