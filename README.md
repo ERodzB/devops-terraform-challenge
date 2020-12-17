@@ -53,6 +53,19 @@ $ ssh-keygen -f nodejs-ec2
 * The created keys must not have a password.
 * If you use other SSH key names be sure to set your own key names variables.
 
+## Project Deployment (For Linux distributions)
+
+After you are done with the installation requirements you are ready to deploy the project infrastructure.
+1. Go to the project root folder and installing required dependencies
+```
+$ terraform init
+```
+2. Deploy the project infrastructure
+```
+$ terraform apply
+```
+You are all set ! Now all you have to do is wait about 5-10 minutes until it installs everything it needs to the application to run.
+
 # Project Modules Overview
 
 # Main Module
