@@ -2,6 +2,14 @@ variable "aws-region" {
   type    = string
   default = "us-east-1"
 }
+variable "access-key"{
+  type = string
+  default = "s"
+}
+variable "secret-key"{
+  type = string
+  default = "s"
+}
 variable "application" {
   type    = string
   default = "chatbot"

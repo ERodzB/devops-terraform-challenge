@@ -1,18 +1,23 @@
 # DevOps Challenge with Terraform
 
 ## Project Overview
-1. Creates the required network to run in AWS which is 1 Main VPC, 3 subnets and a internet gateway.
+1. Creates the required network in which the Chat-App will use. (1 Main VPC, 3 subnets and a internet gateway).
 2. Creates 2 Key pairs for secures access to the EC2 instances.
-3. Creates 1 EC2 instance with Ansible installed and has the Chat-App Ansible playbook.
-4. Creates 2 EC2 instances and then installs [Chat-App](https://github.com/abkunal/Chat-App-using-Socket.io), asking the Ansible server for configuration.
+3. Creates 1 EC2 instance which Ansible will be installed using the ansible.sh bash script and has the Chat-App Ansible playbook.
+4. Creates 2 EC2 instances and then installs [Chat-App](https://github.com/abkunal/Chat-App-using-Socket.io), asking the Ansible server for the required configuration files.
 5. Creates an Application Load Balancer for distributing the traffic between the Chat-App servers between two AZ.
-6. Creates the security policies required to allow servers interaction, accesing via ssh and the comunication between the Application Load Balancer and the Chat-App EC2 instances.
-7. Creates a launch configuration for creating a autoscaling group with Cloudwatch alarms for trigerring the autoscaling policies that the Chat-App EC2 instances uses if needed.
+6. Creates the security policies required to allow servers interaction, accesing via ssh and the traffic between the Application Load Balancer and the Chat-App EC2 instances.
+7. Creates a launch configuration to be later be used in a autoscaling group that has Cloudwatch alarms for trigerring the autoscaling policies that the Chat-App EC2 instances uses if needed.
+
 ## Project Requirements
-- Amazon Web Services Account.
+- A Amazon Web Services Account.
 - Terraform v0.14.2.
-- Preferably use a AWS Cloud9 environment for creating the following infrastructure if not posible create a IAM user with an AWS Access key and AWS Access token. (Be sure to have the right user permissions)
+### NOTES
+* If posible use a AWS Cloud9 environment for deploying the following infrastructure if not create a IAM user with an AWS Access key and AWS Access token. (Be sure to have the right user permissions)
+* If using a IAM user be sure to remove the commented lines at the main module provider and add your access keys to your own variables.
+
 ## Project Installation (For Linux distributions)
+
 ### Installing Terraform
 1. Downloading Terraform 0.14.2.
 ```
@@ -30,7 +35,26 @@ $ terraform -version
 ```
 and it will show you that you have installed terraform 0.14.2.
 
+### Creating SSH keys
+
+Create SSH keys for the EC2 instances
+
+1. at the project root directory create a folder name "ssh-keys"
+```
+$ mkdir ssh-keys
+```
+2. Go to the created directory and proceed to generate the SSH keys
+```
+$ cd ssh-keys
+$ ssh-keygen -f ansible-ec2
+$ ssh-keygen -f nodejs-ec2
+```
+### NOTES
+* The created keys must not have a password.
+* If you use other SSH key names be sure to set your own key names variables.
+
 # Project Modules Overview
+
 # Main Module
 The main.tf contains the reference to the other modules, I decided to took this approach for splitting code and avoid having a big chunk of code.
 ### Module Variables
@@ -47,6 +71,8 @@ The main.tf contains the reference to the other modules, I decided to took this 
 | nodejs-public-key-name | The name of your SSH public key that it will be uploaded to the EC2 Chat-Apps instances. | nodejs-ec2.pub |
 | ansible-public-key-name | The name of your SSH public key that it will be uploaded to the EC2 Ansible instance. | ansible-ec2.pub |
 | nodejs-instance-type | The EC2 Chat-app instance type to use.  | t2.micro |
+| access-key | Your IAM User Acces key |
+| secret-key | Your IAM User Secret key |
 
 ### Module Outputs
 | Output | Description |
@@ -167,7 +193,7 @@ The following subnets are created:
 | devops-public-subnet-a-id | The public subnet A ID of shared services.  |
 | devops-public-subnet-b-id | The public subnet B ID of shared services.  |
 ## Sub Module internet-gateway/networking 
-Sub module which give access to the created subnets.
+Sub module which give access to  internet for the created subnets.
 
 ### Module Variables
 | Variable | Description |
@@ -179,7 +205,7 @@ Sub module which give access to the created subnets.
 | application | Name of the application that will be used for tagging. |
 | environment | Name of Environment that will be used for tagging. |
 
-# Module nodejs-instances module
+# Module nodejs-instances
 Module that creates 2 EC2 instances.
 
 ### Module Variables
@@ -202,13 +228,13 @@ Module that creates 2 EC2 instances.
 | ------ | ------ |
 | devops-nodejs-ec2-instance-a-id | The EC2 Chat-App instance A ID for attaching it to a target group. |
 | devops-nodejs-ec2-instance-b-id | The EC2 Chat-App instance B ID for attaching it to a target group. |
-| devops-nodejs-ec2-instance-a-private-ip | Chat-App server A private ip adress. |
-| devops-nodejs-ec2-instance-b-private-ip | Chat-App server B private ip adress. |
-| devops-nodejs-ec2-instance-a-public-ip | Chat-App server A public ip adress. |
-| devops-nodejs-ec2-instance-b-public-ip | Chat-App server B public ip adress. |
+| devops-nodejs-ec2-instance-a-private-ip | Chat-App server A private ip address. |
+| devops-nodejs-ec2-instance-b-private-ip | Chat-App server B private ip address. |
+| devops-nodejs-ec2-instance-a-public-ip | Chat-App server A public ip address. |
+| devops-nodejs-ec2-instance-b-public-ip | Chat-App server B public ip address. |
 
 ## Sub Module ec2-instance/nodejs-instances
-Module that create a EC2 instance that uses the nodejs.sh bash script for asking the Ansible server for configuration.
+Module that create a EC2 instance which uses the nodejs.sh bash script for asking the Ansible server for configuration.
 
 ### Sub Module Variables
 | Variable | Description |
@@ -225,7 +251,7 @@ Module that create a EC2 instance that uses the nodejs.sh bash script for asking
 | environment | Name of Environment that will be used for tagging. |
 | product | Name of the product that will be used for tagging. |  
 
-### Module Outputs
+### Sub Module Outputs
 | Variable | Description |
 | ------ | ------ |
 | ec2-instance-id | The created EC2 instance ID  |
@@ -318,3 +344,9 @@ Module that creates a the security groups for allowing the servers interactions,
 | devops-ec2-security-group-arn | The Security group ARN in which the Chat-App EC2 instances will be created in. |
 | devops-alb-security-group | The Security group ID which the Application Load Balancer will be using. |
 | devops-shared-services-security-group | The Security group ID which the Ansible server will be using. |
+
+# How does the EC2 instances gets it's configuration from the Ansible server
+* Everytime a EC2 instance gets launched it executes de nodejs.sh bash script which is in charge of executing the right commands for:
+1. Creating the Ansible SSH key
+2. Know the instance private IP (This step is required for the Ansible server to know to which server the ansible playbook will run)
+3. Connecting to the Ansible server and executing a Script that adds the server to the hosts inventory and executes the node.yaml playbook.
