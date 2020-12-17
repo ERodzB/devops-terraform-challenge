@@ -20,7 +20,7 @@
       url: "https://deb.nodesource.com/setup_12.x"
       owner: ubuntu
       dest: /etc/nodejs12-package/setup_12.x
-  - name: "Giving permisions to package"
+  - name: "Giving Execution permisions to package"
     file:
       dest: /etc/nodejs12-package/setup_12.x
       mode: +x
