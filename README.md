@@ -39,7 +39,7 @@ and it will show you that you have installed terraform 0.14.2.
 
 Create SSH keys for the EC2 instances
 
-1. at the project root directory create a folder name "ssh-keys"
+1. At the project root directory create a folder named "ssh-keys"
 ```
 $ mkdir ssh-keys
 ```
@@ -56,7 +56,7 @@ $ ssh-keygen -f nodejs-ec2
 ## Project Deployment (For Linux distributions)
 
 After you are done with the installation requirements you are ready to deploy the project infrastructure.
-1. Go to the project root folder and installing required dependencies
+1. Go to the project root folder and install the required dependencies
 ```
 $ terraform init
 ```
@@ -359,7 +359,7 @@ Module that creates a the security groups for allowing the servers interactions,
 | devops-shared-services-security-group | The Security group ID which the Ansible server will be using. |
 
 # How does the EC2 instances gets it's configuration from the Ansible server
-* Everytime a EC2 instance gets launched it executes de nodejs.sh bash script which is in charge of executing the following commands:
+* Everytime a EC2 instance gets launched it executes the nodejs.sh bash script which is in charge of executing the following commands:
 1. Creating the Ansible SSH key
 2. Know the instance private IP (This step is required for the Ansible server to know to which server the ansible playbook will run)
 3. Connecting to the Ansible server and executing a Script that adds the server to the hosts inventory and executes the node.yaml playbook.
