@@ -346,7 +346,7 @@ Module that creates a the security groups for allowing the servers interactions,
 | devops-shared-services-security-group | The Security group ID which the Ansible server will be using. |
 
 # How does the EC2 instances gets it's configuration from the Ansible server
-* Everytime a EC2 instance gets launched it executes de nodejs.sh bash script which is in charge of executing the right commands for:
+* Everytime a EC2 instance gets launched it executes de nodejs.sh bash script which is in charge of executing the following commands:
 1. Creating the Ansible SSH key
 2. Know the instance private IP (This step is required for the Ansible server to know to which server the ansible playbook will run)
 3. Connecting to the Ansible server and executing a Script that adds the server to the hosts inventory and executes the node.yaml playbook.
