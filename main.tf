@@ -65,9 +65,6 @@ module "ansible-instance" {
   devops-shared-services-security-group = module.security-groups.devops-shared-services-security-group
   #AWS Key pair
   devops-ec2-ansible-key-pair = module.ansible-key-pair.server-key-pair-name
-  #NodeJs instances IP
-  devops-nodejs-ec2-instance-a-private-ip = module.nodejs-instances.devops-nodejs-ec2-instance-a-private-ip
-  devops-nodejs-ec2-instance-b-private-ip = module.nodejs-instances.devops-nodejs-ec2-instance-b-private-ip
 }
 
 module "nodejs-ami-finder" {
@@ -106,13 +103,11 @@ module "application-load-balancer" {
   environment = var.environment
 
   devops-vpc-id                   = module.networking.devops-vpc-id
-  devops-ec2-security-group-arn   = module.security-groups.devops-ec2-security-group-arn
   devops-nodejs-ec2-instance-a-id = module.nodejs-instances.devops-nodejs-ec2-instance-a-id
   devops-nodejs-ec2-instance-b-id = module.nodejs-instances.devops-nodejs-ec2-instance-b-id
   devops-public-subnet-a-id       = module.networking.devops-public-subnet-a-id
   devops-public-subnet-b-id       = module.networking.devops-public-subnet-b-id
   devops-alb-security-group       = module.security-groups.devops-alb-security-group
-  devops-ec2-security-group       = module.security-groups.devops-ec2-security-group
 }
 
 module "nodejs-launch-template" {

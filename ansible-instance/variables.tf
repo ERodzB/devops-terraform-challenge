@@ -3,8 +3,6 @@ variable "devops-shared-services-security-group" {}
 variable "devops-shared-services-subnet-id" {}
 variable "nodejs-private-key-name" {}
 variable "ansible-private-key-name" {}
-variable "devops-nodejs-ec2-instance-a-private-ip" {}
-variable "devops-nodejs-ec2-instance-b-private-ip" {}
 variable "amazon-linux-2-server-ami-id" {}
 variable "application" {}
 variable "environment" {}
