@@ -35,7 +35,7 @@ and it will show you that you have installed terraform 0.14.2.
 The main.tf contains the reference to the other modules, I decided to took this approach for splitting code and avoid having a big chunk of code.
 ### Main Module Variables
 | Variable | Description | Default Value |
-| ------ | ------ |
+| ------ | ------ | ------ |
 | aws-region |  The AWS region that the infrastructure will be created in. | us-east-1 |
 | application | Name of the application that uses this infrastructure | chatbot |
 | environment | Environment in which the infrastructure it's being deployed | sandbox |
@@ -47,4 +47,12 @@ The main.tf contains the reference to the other modules, I decided to took this 
 | nodejs-public-key-name | The name of your SSH public key that it will be uploaded to the EC2 Chat-Apps instances | nodejs-ec2.pub |
 | ansible-public-key-name | The name of your SSH public key that it will be uploaded to the EC2 Ansible instance | ansible-ec2.pub |
 | nodejs-instance-type | The EC2 Chat-app instance type to use  | t2.micro |
-
+### Main Module Outputs
+| Output | Description |
+| ------ | ------ |
+| ansible-ip-address | Ansible server public ip address  |
+| devops-nodejs-instances-alb-dns | Application Load balancer DNS |
+| devops-nodejs-ec2-instance-a-private-ip | Chat-App server A private ip adress |
+| devops-nodejs-ec2-instance-b-private-ip | Chat-App server B private ip adress |
+| devops-nodejs-ec2-instance-a-public-ip | Chat-App server A public ip adress |
+| devops-nodejs-ec2-instance-b-public-ip | Chat-App server B public ip adress |
